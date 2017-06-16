@@ -1,3 +1,2 @@
 INDEX VERSION 1.130+/Users/dischnerz/code/JavaDataStructures/.metadata/.plugins/org.eclipse.jdt.core
 1544860896.index
-2401283352.index
