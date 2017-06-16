@@ -2,21 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98e15945-d353-4430-b59d-6d63b79507f3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.mylyn/.tasks.xml.zip" afterPath="$PROJECT_DIR$/.metadata/.mylyn/.tasks.xml.zip" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.mylyn/tasks.xml.zip" afterPath="$PROJECT_DIR$/.metadata/.mylyn/tasks.xml.zip" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/UCSDGraphs/.markers.snap" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/UCSDGraphs/.markers.snap" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/UCSDGraphs/.syncinfo.snap" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.projects/UCSDGraphs/.syncinfo.snap" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.root/.markers.snap" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.root/.markers.snap" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/2.snap" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.core.resources/2.snap" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/variablesAndContainers.dat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" afterPath="$PROJECT_DIR$/.metadata/.plugins/org.eclipse.jdt.core/savedIndexNames.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UCSDGraphs/.classpath" afterPath="$PROJECT_DIR$/UCSDGraphs/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UCSDGraphs/data/maps/mapfiles.list" afterPath="$PROJECT_DIR$/UCSDGraphs/data/maps/mapfiles.list" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UCSDGraphs/src/html/index.html" afterPath="$PROJECT_DIR$/UCSDGraphs/src/html/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/UCSDGraphs/src/util/GraphLoader.java" afterPath="$PROJECT_DIR$/UCSDGraphs/src/util/GraphLoader.java" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -43,8 +29,8 @@
       <file leaf-file-name="Graph.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/UCSDGraphs/src/basicgraph/Graph.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="50">
-              <caret line="228" column="4" lean-forward="true" selection-start-line="228" selection-start-column="4" selection-end-line="228" selection-end-column="4" />
+            <state relative-caret-position="350">
+              <caret line="248" column="0" lean-forward="true" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -251,7 +237,7 @@
       <option name="MAIN_CLASS_NAME" value="MyApp" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/UCSDGraphs/src/application" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/UCSDGraphs" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
@@ -727,8 +713,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/UCSDGraphs/src/basicgraph/Graph.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="228" column="4" lean-forward="true" selection-start-line="228" selection-start-column="4" selection-end-line="228" selection-end-column="4" />
+        <state relative-caret-position="350">
+          <caret line="248" column="0" lean-forward="true" selection-start-line="248" selection-start-column="0" selection-end-line="248" selection-end-column="0" />
           <folding />
         </state>
       </provider>
