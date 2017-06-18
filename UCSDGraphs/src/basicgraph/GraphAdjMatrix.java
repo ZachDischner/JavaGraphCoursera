@@ -61,6 +61,8 @@ public class GraphAdjMatrix extends Graph {
 	 * If there are multiple edges between the vertex
 	 * and one of its out-neighbors, this neighbor
 	 * appears once in the list for each of these edges.
+	 *
+	 * AKA rowsum for vertices in row `v`
 	 * 
 	 * @param v the index of vertex.
 	 * @return List<Integer> a list of indices of vertices.  
@@ -81,6 +83,8 @@ public class GraphAdjMatrix extends Graph {
 	 * If there are multiple edges from another vertex
 	 * to this one, the neighbor
 	 * appears once in the list for each of these edges.
+	 *
+	 * AKA column addition of each vertex in column `v`
 	 * 
 	 * @param v the index of vertex.
 	 * @return List<Integer> a list of indices of vertices.  

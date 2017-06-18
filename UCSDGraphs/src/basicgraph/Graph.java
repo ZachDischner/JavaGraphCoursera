@@ -121,8 +121,15 @@ public abstract class Graph {
 	 * @return The degree sequence of this graph.
 	 */
 	public List<Integer> degreeSequence() {
-		// XXX: Implement in part 1 of week 2
-		return null;
+		// Sum of In+Out degree for each node in order.
+		List<Integer> degSeq = new ArrayList<Integer>();
+
+		for (int vertex = 0; vertex < getNumVertices(); vertex++){
+			degSeq.add( getNeighbors(vertex).size() + getInNeighbors(vertex).size() );
+		}
+		
+		Collections.sort(degSeq, Collections.reverseOrder());
+		return degSeq;
 	}
 	
 	/**
@@ -246,6 +253,14 @@ public abstract class Graph {
 		
 		System.out.println("Observe all degrees are <= 12.");
 		System.out.println("****");
+
+		System.out.println("\n\n----------------Part 1 Testing-------------------------");
+		List degSeq = graphFromFile.degreeSequence();
+		Integer maxDeg = (Integer) degSeq.get(0);
+		Integer minDeg = (Integer) degSeq.get(degSeq.size()-1);
+		System.out.printf("\n* Maximum degree should be 10 (inspect the graph vis). Max: %d. Correct? %b",maxDeg, maxDeg==10);
+		System.out.format("\n* Minimum degree should be 2 (inspect the graph vis). Max: %d. Correct? %b",minDeg, minDeg==2);
+		System.out.println("\n-------------------------------------------------------");
 
 		System.out.println("\n****");
 		
