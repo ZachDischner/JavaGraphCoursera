@@ -1,10 +1,6 @@
 package basicgraph;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /** A class that implements a directed graph. 
  * The graph may have self-loops, parallel edges. 
@@ -95,8 +91,18 @@ public class GraphAdjList extends Graph {
 	 * @return List<Integer> a list of indices of vertices.  
 	 */		
 	 public List<Integer> getDistance2(int v) {
-		 // XXX: Implement this method in week 2
-		 return null;
+//		 Set neighborSet = new HashSet();
+		 List<Integer> neighbors = new ArrayList<>();
+		 for (int neighbor: getNeighbors(v)){
+		 	for (int subneighbor: getNeighbors(neighbor)){
+			 	//Method 1 - put in a new HashSet() and return the keys
+//		 		neighborSet.add(subneighbor);
+		 		// Method2 - Put in list if it is not there already
+		 		if (!neighbors.contains(subneighbor)){neighbors.add(subneighbor);}
+			}
+		 }
+//		 neighbors.addAll(neighborSet);
+		 return neighbors;
 	}
 	
 	/**

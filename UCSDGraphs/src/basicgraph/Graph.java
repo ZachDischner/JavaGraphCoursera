@@ -277,6 +277,19 @@ public abstract class Graph {
 		// Test your distance2 code here.
 		System.out.println("Testing distance-two methods on sample graphs...");
 		System.out.println("Goal: implement method using two approaches.");
+		
+		System.out.println("\n\n\n\n-------------------Part 2 Testing-------------------");
+		GraphAdjList adjListGraph = new GraphAdjList();
+		GraphLoader.loadRoadMap("data/testdata/simpletest.map", adjListGraph);
+		System.out.println("Loaded Graph:");
+		System.out.println(adjListGraph);
+		
+		System.out.print("2-hop neighbors from 3: ");
+		List<Integer> neighbors2 = adjListGraph.getDistance2(3);
+		System.out.print(neighbors2);
+		System.out.println("\n------------------------------------------------------------");
+
+		
 
 
 		
