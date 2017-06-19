@@ -282,11 +282,19 @@ public abstract class Graph {
 		GraphAdjList adjListGraph = new GraphAdjList();
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", adjListGraph);
 		System.out.println("Loaded Graph:");
+
+		System.out.println("Testing Adjacenty List Method for finding two-hop neighbors");
 		System.out.println(adjListGraph);
-		
 		System.out.print("2-hop neighbors from 3: ");
 		List<Integer> neighbors2 = adjListGraph.getDistance2(3);
 		System.out.print(neighbors2);
+
+		System.out.println("\nTesting Adjacenty Matrix Method for finding two-hop neighbors");
+		GraphAdjMatrix adjMatrixGraph = new GraphAdjMatrix();
+		GraphLoader.loadRoadMap("data/testdata/simpletest.map", adjMatrixGraph);
+		System.out.print("2-hop neighbors from 3: ");
+		List<Integer> neighbors3 = adjMatrixGraph.getDistance2(3);
+		System.out.print(neighbors3);
 		System.out.println("\n------------------------------------------------------------");
 
 		

@@ -108,8 +108,31 @@ public class GraphAdjMatrix extends Graph {
 	 * @return List<Integer> a list of indices of vertices.  
 	 */	
 	public List<Integer> getDistance2(int v) {
-		// XXX Implement this method in week 2
-		return null;
+		// Handy, two hop is just the matrix multilication product of the adj matrix!
+		// * Calculate the matrix multiplied adj matrix
+		// * All elements in row `v` are two-hop reachable
+
+		// Store
+		int numVertices = getNumVertices();
+		int[][] twoHop = new int[numVertices][numVertices];
+		for (int row=0; row<numVertices; row++){
+			for (int col=0; col<numVertices; col++){
+				// Initialize, can't hurt right?
+				twoHop[row][col] = 0;
+				// Row @ Col = row[0]*col[0] + row[1]*col[1]...
+				for (int ix=0; ix<numVertices; ix++){
+					twoHop[row][col] += adjMatrix[row][ix] * adjMatrix[ix][col];
+				}
+			}
+		}
+
+		List twoHopList = new ArrayList<Integer>();
+		for (int ix=0; ix<numVertices; ix++){
+			for (int occurance=0; occurance<twoHop[v][ix]; occurance++){
+				twoHopList.add(ix);
+			}
+		}
+		return twoHopList;
 	}
 	
 	/**

@@ -86,6 +86,9 @@ public class GraphAdjList extends Graph {
 	/** 
 	 * Implement the abstract method for finding all 
 	 * vertices reachable by two hops from v.
+	 *
+	 * 2 methods: 1. Add to a list of 2 hop neighbors, checking to see if it exists in the list first
+	 * 			  2. Create a Set (HashSet) of 2 hop neighbors, then extract keys into a new list
 	 * 
 	 * @param v the index of vertex.
 	 * @return List<Integer> a list of indices of vertices.  
@@ -97,8 +100,9 @@ public class GraphAdjList extends Graph {
 		 	for (int subneighbor: getNeighbors(neighbor)){
 			 	//Method 1 - put in a new HashSet() and return the keys
 //		 		neighborSet.add(subneighbor);
-		 		// Method2 - Put in list if it is not there already
-		 		if (!neighbors.contains(subneighbor)){neighbors.add(subneighbor);}
+		 		// Method2 - Put in list if it is not there already   (Or duplicate additions for non-uniqueness)
+//		 		if (!neighbors.contains(subneighbor)){neighbors.add(subneighbor);}
+				neighbors.add(subneighbor);
 			}
 		 }
 //		 neighbors.addAll(neighborSet);
