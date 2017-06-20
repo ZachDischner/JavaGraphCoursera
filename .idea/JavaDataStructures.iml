@@ -4,10 +4,16 @@
     <output url="file://$MODULE_DIR$/UCSDGraphs/bin" />
     <output-test url="file:///test/JavaDataStructures" />
     <exclude-output />
+    <annotation-paths>
+      <root url="file://$MODULE_DIR$/UCSDGraphs/data" />
+    </annotation-paths>
     <content url="file://$MODULE_DIR$/UCSDGraphs">
       <sourceFolder url="file://$MODULE_DIR$/UCSDGraphs/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/UCSDGraphs/data" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/UCSDGraphs/libs" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="javax.json-1.0.4" level="project" />
   </component>
 </module>
