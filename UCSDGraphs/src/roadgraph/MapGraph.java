@@ -8,9 +8,9 @@
 package roadgraph;
 
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.List;
 
 import geography.GeographicPoint;
 import util.GraphLoader;
@@ -23,15 +23,32 @@ import util.GraphLoader;
  *
  */
 public class MapGraph {
-	//TODO: Add your member variables here in WEEK 3
-	
-	
+	// Threshold for when two coordinates are *the same*
+	public double dist_threshold = 0.001;
+	// Map Graph will be stored as an *Adjacency List*, because the nodes will likely be sparsely connected
+	public Map<GeographicPoint, List<MapEdge>> edgeMap; // edgeMap maps a point to a list of all outgoing MapEdges
+	public Map<GeographicPoint, MapNode> nodeMap;  // Not crazy useful since all the Node has is visit state.
+												      		// May just be better to define a __repr__ like MapNode key
+															// Keeping this way bc interface calls for geo points etc
+
 	/** 
 	 * Create a new empty MapGraph 
 	 */
 	public MapGraph()
 	{
-		// TODO: Implement in this constructor in WEEK 3
+		// Create graph definition variables
+		this.nodeMap = new HashMap<>() ;
+		this.edgeMap = new HashMap<>() ;
+	}
+
+
+	/**
+	 * Resets all nodes to the UNVISITED state for re-searching
+	 */
+	public void reset()
+	{
+		// Mark each node as unvisited  **MIGHT BE BETTER OFF JUST HAVING THIS BE DONE BY DEFAULT IN SEARCHES**
+		this.nodeMap.forEach((k, v) -> v.visitState = VisitState.UNVISITED);
 	}
 	
 	/**
@@ -40,18 +57,18 @@ public class MapGraph {
 	 */
 	public int getNumVertices()
 	{
-		//TODO: Implement this method in WEEK 3
-		return 0;
+		// Number of vertices is simple.
+		return this.nodeMap.size();
 	}
-	
+
 	/**
 	 * Return the intersections, which are the vertices in this graph.
 	 * @return The vertices in this graph as GeographicPoints
 	 */
 	public Set<GeographicPoint> getVertices()
 	{
-		//TODO: Implement this method in WEEK 3
-		return null;
+		// Vertices are the Keys in the nodeMap object
+		return this.nodeMap.keySet();
 	}
 	
 	/**
@@ -60,8 +77,14 @@ public class MapGraph {
 	 */
 	public int getNumEdges()
 	{
-		//TODO: Implement this method in WEEK 3
-		return 0;
+//		int edgeCount = 0;
+//		for (Map.Entry<GeographicPoint, List<MapEdge>> entry : this.edgeMap.entrySet()) {
+//			edgeCount += entry.getValue().size();
+//		}
+//		return edgeCount;
+		final int[] edgeCount = {0};
+		this.edgeMap.forEach((k, v) -> edgeCount[0] += v.size());
+		return edgeCount[0];
 	}
 
 	
@@ -75,8 +98,20 @@ public class MapGraph {
 	 */
 	public boolean addVertex(GeographicPoint location)
 	{
-		// TODO: Implement this method in WEEK 3
-		return false;
+		// Failure conditions
+//		System.out.format("Number of nodes: %d\n", this.nodeMap.size());
+		if (location==null || nodeMap.containsKey(location)) {
+			System.out.println("Node already exists! " + location.toString());
+			return false;
+		}
+
+		// Add vertex to `nodeMap`, container mapping Geo coords to a MapNode object
+		this.nodeMap.put(location, new MapNode(location));
+
+		// Also initialize the vertexMap mapping
+		this.edgeMap.put(location, new ArrayList<>());  // point has no outgoing edges at this point
+
+		return true;
 	}
 	
 	/**
@@ -95,7 +130,21 @@ public class MapGraph {
 			String roadType, double length) throws IllegalArgumentException {
 
 		//TODO: Implement this method in WEEK 3
-		
+
+		// Validity checks: Are the points valid and the points exist in the graph?
+		if (from==null) {throw new IllegalArgumentException("`from` point cannot be null!");}
+		if (to==null) {throw new IllegalArgumentException("`to` point cannot be null!");}
+		if (!this.nodeMap.containsKey(from)) {throw new IllegalArgumentException("`from` point  " + from.toString() + " is not in the graph!");}
+		if (!this.nodeMap.containsKey(to)) {throw new IllegalArgumentException("`from` point  " + to.toString() + " is not in the graph!");}
+
+		// Validity checks: Do edge properties make sense?
+		if (roadName==null) {throw new IllegalArgumentException("`roadName` cannot be null!");}
+		if (roadType==null) {throw new IllegalArgumentException("`roadType` cannot be null!");}
+		if (length<0) {throw new IllegalArgumentException("`length` cannot be less than 0!");}
+
+		// All checks passed! Add to the `edgeMap` map
+		this.edgeMap.get(from).add( new MapEdge(from, to, roadName, roadType, length));
+
 	}
 	
 
@@ -123,12 +172,57 @@ public class MapGraph {
 	public List<GeographicPoint> bfs(GeographicPoint start, 
 			 					     GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
-		// TODO: Implement this method in WEEK 3
-		
-		// Hook for visualization.  See writeup.
-		//nodeSearched.accept(next.getLocation());
+		// First off, set each node to UNVISITED for this new search
+		this.reset();
 
-		return null;
+		// Initialize Search Queue and Parent Mapping
+		Queue<GeographicPoint> queue = new LinkedList<>();
+		queue.add(start);
+		Map<GeographicPoint,GeographicPoint> parentMap = new HashMap<>();
+		parentMap.put(start,null);
+		boolean found = false;
+		GeographicPoint thisNode = null;
+
+
+		// Start the search!
+		while (!queue.isEmpty()) {
+			// Deque, add the previously explored to the parent mapping
+			thisNode = queue.remove();
+			System.out.println("Exploring node: " + thisNode.toString());// + " Queue length: " + queue.size());
+			nodeSearched.accept(thisNode);
+			nodeMap.get(thisNode).visitState = VisitState.VISITED;  // Mark node as visited. Avoids loops and whatnot
+
+			// Reached our goal?
+//			System.out.println("\t\t\tThis (" + thisNode.toString() + " distance to goal " + goal.toString() + "?: " + thisNode.distance(goal));
+			if (thisNode.distance(goal) < dist_threshold) {
+//				System.out.println("Found!");
+				found = true;
+				break;
+			}
+
+			// Queue up more unexplored nodes for exploration. AKA each endpoint in this node's outgoing edges
+			for (MapEdge edge: this.edgeMap.get(thisNode)){
+				if (this.nodeMap.get(edge.end).visitState == VisitState.UNVISITED){
+					this.nodeMap.get(edge.end).visitState = VisitState.VISITING;
+//					System.out.println("\tAdding child node: " + edge.end.toString());
+					queue.add(edge.end);
+					parentMap.put(edge.end, thisNode);
+				}
+			}
+		}
+
+		// Goal was not reached! Return empty list
+		if (found==false){			System.out.println("\t\tNever found the goal :-(");
+			return new ArrayList<>();}
+
+		// Traceback and return path from `start` to `goal` by examining each object's parents
+		List<GeographicPoint> path = new ArrayList<>();  // Fill in: [`goal` -> `goal.parent`... `start`] and reverse
+		while (thisNode != null){   // Not especially pretty...
+			path.add(thisNode);
+			thisNode = parentMap.get(thisNode);
+		}
+		Collections.reverse(path);
+		return path;
 	}
 	
 
@@ -197,6 +291,80 @@ public class MapGraph {
 		return null;
 	}
 
+	public void printMe(){
+		System.out.format("\n\n----Geo Map----: Nodes: %d, Edges: %d\n", this.getNumVertices(), this.getNumEdges());
+		for  (Map.Entry<GeographicPoint, List<MapEdge>> entry : this.edgeMap.entrySet()){
+			System.out.format("Node: %s:\n", entry.getKey().toString());
+			for (MapEdge edge: entry.getValue()){
+				System.out.format("\t\t--> Endpoint (%s) via '%s', distance: %3.3f\n", edge.end.toString(), edge.roadName, edge.length);
+			}
+		}
+		System.out.println("---------------------------------------------------");
+	}
+
+	// Helper classes (defined in this class? What a pain in the ass
+	public enum VisitState {
+		UNVISITED,
+		VISITING,
+		VISITED;
+	}
+
+	/**
+	 * @author Zach Dischner
+	 *
+	 * Simple class to represent a map Node (GeographicPoint) abstractor
+	 *  -- No real point to this right now. Basically just tracks visit state unnecessarily. If Disktra doesn't require
+	 *  	any more out of it, get rid of the class
+	 *
+	 */
+	public class MapNode {
+
+		/**
+		 * Constructor
+		 */
+		VisitState visitState;
+		GeographicPoint point;
+
+		public MapNode(GeographicPoint point) {
+			this.point = point;
+			this.visitState = VisitState.UNVISITED;
+		}
+
+		public String toString() {
+			return "Node: [" + this.point.toString() + "]("+this.visitState.toString()+")";
+		}
+	}
+
+	/**
+	 * @author Zach Dischner
+	 *
+	 * Simple class to represent a map Node (GeographicPoint) abstractor
+	 *
+	 */
+	public class MapEdge {
+
+		/**
+		 * Constructor
+		 */
+		GeographicPoint start;
+		GeographicPoint end;
+		String roadName;
+		String roadType;
+		double length;
+
+		public MapEdge(GeographicPoint start, GeographicPoint end, String roadName, String roadType, double length) {
+			this.start = start;
+			this.end = end;
+			this.roadName = roadName;
+			this.roadType = roadType;
+			this.length = length;
+//			System.out.format("New edge! ("+start.toString()+"-->"+end.toString()+") ["+roadName+","+roadType+",%f]\n",length);
+		}
+
+		public String toString() {
+			return "Edge: (" + this.start.toString() + "  --> " + this.end.toString() + " )";
+		}
+	}
 	
 	
 	public static void main(String[] args)
@@ -214,13 +382,36 @@ public class MapGraph {
 		 * the Week 3 End of Week Quiz, EVEN IF you score 100% on the 
 		 * programming assignment.
 		 */
-		/*
+
 		MapGraph simpleTestMap = new MapGraph();
 		GraphLoader.loadRoadMap("data/testdata/simpletest.map", simpleTestMap);
-		
+		System.out.format("Loaded test map has %d nodes and %d edges", simpleTestMap.getNumVertices(),simpleTestMap.getNumEdges());
+		simpleTestMap.printMe();
+
 		GeographicPoint testStart = new GeographicPoint(1.0, 1.0);
 		GeographicPoint testEnd = new GeographicPoint(8.0, -1.0);
-		
+
+		System.out.println("\n*Test 1 using simpletest: BFS from " + testStart.toString() + " --> " + testEnd.toString());
+		System.out.println("\tShould be: (1,1) --> (4,1) --> (7,3) --> (8,-1)");
+		List<GeographicPoint> path = simpleTestMap.bfs(testStart, testEnd);
+		System.out.format("\tLength of BFS path traversed: %d\n",path.size());
+		for (GeographicPoint point: path){
+			System.out.format("  ->  (%s)", point.toString());
+		}
+
+		simpleTestMap.reset();
+		GeographicPoint testStart2 = new GeographicPoint(4.0, -1.0);
+		GeographicPoint testEnd2 = new GeographicPoint(6.5, 0.0);
+		System.out.println("\n\n*Test 2 using simpletest: BFS from " + testStart2.toString() + " --> " + testEnd2.toString());
+		System.out.println("\tShould be: (4,-1) --> (8,-1) --> (6.5,0)");
+		List<GeographicPoint> path2 = simpleTestMap.bfs(testStart2, testEnd2);
+		System.out.format("\tLength of BFS path traversed: %d\n",path2.size());
+		for (GeographicPoint point: path2){
+			System.out.format("  ->  (%s)", point.toString());
+		}
+
+
+		/*
 		System.out.println("Test 1 using simpletest: Dijkstra should be 9 and AStar should be 5");
 		List<GeographicPoint> testroute = simpleTestMap.dijkstra(testStart,testEnd);
 		List<GeographicPoint> testroute2 = simpleTestMap.aStarSearch(testStart,testEnd);
